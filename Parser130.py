@@ -14,8 +14,14 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+# Tokens and Grammar from https://www.khronos.org/registry/OpenGL/specs/gl/GLSLangSpec.1.30.pdf
 
-# Those tokens are from https://www.khronos.org/registry/OpenGL/specs/gl/GLSLangSpec.1.30.pdf
+import ply.lex as lex 
+
+from ASTNode import *
+from VariableIdentifier import *
+
 tokens = ['ATTRIBUTE', 'CONST', 'BOOL', 'FLOAT', 'INT', 'UINT', 'BREAK', 'CONTINUE', 'DO', 'ELSE', 'FOR', 'IF', 'DISCARD', 'RETURN', 'SWITCH', 'CASE', 'DEFAULT', 'BVEC2', 'BVEC3', 'BVEC4', 'IVEC2', 'IVEC3', 'IVEC4', 'UVEC2', 'UVEC3', 'UVEC4', 'VEC2', 'VEC3', 'VEC4', 'MAT2', 'MAT3', 'MAT4', 'CENTROID', 'IN', 'OUT', 'INOUT', 'UNIFORM', 'VARYING', 'NOPERSPECTIVE', 'FLAT', 'SMOOTH', 'MAT2X2', 'MAT2X3', 'MAT2X4', 'MAT3X2', 'MAT3X3', 'MAT3X4', 'MAT4X2', 'MAT4X3', 'MAT4X4', 'SAMPLER1D', 'SAMPLER2D', 'SAMPLER3D', 'SAMPLERCUBE', 'SAMPLER1DSHADOW', 'SAMPLER2DSHADOW', 'SAMPLERCUBESHADOW', 'SAMPLER1DARRAY', 'SAMPLER2DARRAY', 'SAMPLER1DARRAYSHADOW', 'SAMPLER2DARRAYSHADOW', 'ISAMPLER1D', 'ISAMPLER2D', 'ISAMPLER3D', 'ISAMPLERCUBE', 'ISAMPLER1DARRAY', 'ISAMPLER2DARRAY', 'USAMPLER1D', 'USAMPLER2D', 'USAMPLER3D', 'USAMPLERCUBE', 'USAMPLER1DARRAY', 'USAMPLER2DARRAY', 'STRUCT', 'VOID', 'WHILE', 'IDENTIFIER', 'TYPE_NAME', 'FLOATCONSTANT', 'INTCONSTANT', 'UINTCONSTANT', 'BOOLCONSTANT', 'FIELD_SELECTION', 'LEFT_OP', 'RIGHT_OP', 'INC_OP', 'DEC_OP', 'LE_OP', 'GE_OP', 'EQ_OP', 'NE_OP', 'AND_OP', 'OR_OP', 'XOR_OP', 'MUL_ASSIGN', 'DIV_ASSIGN', 'ADD_ASSIGN', 'MOD_ASSIGN', 'LEFT_ASSIGN', 'RIGHT_ASSIGN', 'AND_ASSIGN', 'XOR_ASSIGN', 'OR_ASSIGN', 'SUB_ASSIGN', 'LEFT_PAREN', 'RIGHT_PAREN', 'LEFT_BRACKET', 'RIGHT_BRACKET', 'LEFT_BRACE', 'RIGHT_BRACE', 'DOT', 'COMMA', 'COLON', 'EQUAL', 'SEMICOLON', 'BANG', 'DASH', 'TILDE', 'PLUS', 'STAR', 'SLASH', 'PERCENT', 'LEFT_ANGLE', 'RIGHT_ANGLE', 'VERTICAL_BAR', 'CARET', 'AMPERSAND', 'QUESTION', 'INVARIANT', 'HIGH_PRECISION', 'MEDIUM_PRECISION', 'LOW_PRECISION', 'PRECISION']
 
 # Specification of the regular expressions for each token
@@ -167,7 +173,6 @@ def t_error(t):
     t.lexer.skip(1)
     
 # Build the lexer
-import ply.lex as lex 
 lexer = lex.lex()
 
 # Set the precedence rules
@@ -191,10 +196,14 @@ precedence = (
     ('left', 'COMMA')
     )
 
-names = { }
+node = ASTNode(None)
 
-#def p_variable_identifier(t):
-        #'IDENTIFIER' 
+def p_variable_identifier(t):
+    'variable_identifier: IDENTIFIER'
+    child = VariableIdentifier(node, t[1])
+    node.appendChild(child)
+    pass
+    
 #primary_expression:
         #variable_identifier 
         #INTCONSTANT
