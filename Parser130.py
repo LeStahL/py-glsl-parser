@@ -204,179 +204,179 @@ def p_variable_identifier(t):
     node.appendChild(child)
     pass
     
-#primary_expression:
-        #variable_identifier 
-        #INTCONSTANT
-        #UINTCONSTANT 
-        #FLOATCONSTANT 
-        #BOOLCONSTANT 
-        #LEFT_PAREN expression RIGHT_PAREN 
-#postfix_expression:
-        #primary_expression 
-        #postfix_expression LEFT_BRACKET integer_expression RIGHT_BRACKET 
-        #function_call 
-        #postfix_expression DOT FIELD_SELECTION 
-        #postfix_expression INC_OP 
-        #postfix_expression DEC_OP 
-#integer_expression:
-        #expression 
-#function_call:
-        #function_call_or_method
-#function_call_or_method:
-        #function_call_generic 
-        #postfix_expression DOT function_call_generic
-#function_call_generic:
-        #function_call_header_with_parameters RIGHT_PAREN 
-        #function_call_header_no_parameters RIGHT_PAREN 
-#function_call_header_no_parameters:
-        #function_call_header VOID 
-        #function_call_header 
-#function_call_header_with_parameters:
-        #function_call_header assignment_expression 
-        #function_call_header_with_parameters COMMA assignment_expression 
-#function_call_header:
-        #function_identifier LEFT_PAREN 
-#// Grammar Note: Constructors look like functions, but lexical analysis recognized most of them as
-#// keywords.  They are now recognized through “type_specifier”.
-#function_identifier:
-        #type_specifier
-        #IDENTIFIER
-        #FIELD_SELECTION 
-#unary_expression:
-        #postfix_expression 
-        #INC_OP unary_expression 
-        #DEC_OP unary_expression 
-        #unary_operator unary_expression 
-#// Grammar Note:  No traditional style type casts.
-#unary_operator:
-        #PLUS 
-        #DASH 
-        #BANG 
-        #TILDE
-#// Grammar Note:  No '*' or '&' unary ops.  Pointers are not supported.
-#multiplicative_expression:
-        #unary_expression 
-        #multiplicative_expression STAR unary_expression
-        #multiplicative_expression SLASH unary_expression
-        #multiplicative_expression PERCENT unary_expression
-#additive_expression:
-        #multiplicative_expression 
-        #additive_expression PLUS multiplicative_expression 
-        #additive_expression DASH multiplicative_expression 
-#shift_expression:
-        #additive_expression 
-        #shift_expression LEFT_OP additive_expression
-        #shift_expression RIGHT_OP additive_expression
-#relational_expression:
-        #shift_expression 
-        #relational_expression LEFT_ANGLE shift_expression 
-        #relational_expression RIGHT_ANGLE shift_expression 
-        #relational_expression LE_OP shift_expression 
-        #relational_expression GE_OP shift_expression 
-#equality_expression:
-        #relational_expression 
-        #equality_expression EQ_OP relational_expression 
-        #equality_expression NE_OP relational_expression 
-#and_expression:
-        #equality_expression 
-        #and_expression AMPERSAND equality_expression
-#exclusive_or_expression:
-        #and_expression 
-        #exclusive_or_expression CARET and_expression
-#inclusive_or_expression:
-        #exclusive_or_expression 
-        #inclusive_or_expression VERTICAL_BAR exclusive_or_expression
-#logical_and_expression:
-        #inclusive_or_expression 
-        #logical_and_expression AND_OP inclusive_or_expression 
-#logical_xor_expression:
-        #logical_and_expression 
-        #logical_xor_expression XOR_OP logical_and_expression 
-#logical_or_expression:
-        #logical_xor_expression 
-        #logical_or_expression OR_OP logical_xor_expression 
-#conditional_expression:
-        #logical_or_expression 
-        #logical_or_expression QUESTION expression COLON assignment_expression 
-#assignment_expression:
-        #conditional_expression 
-        #unary_expression assignment_operator assignment_expression 
-#assignment_operator:
-        #EQUAL 
-        #MUL_ASSIGN
-        #DIV_ASSIGN
-        #MOD_ASSIGN
-        #ADD_ASSIGN 
-        #SUB_ASSIGN 
-        #LEFT_ASSIGN
-        #RIGHT_ASSIGN
-        #AND_ASSIGN
-        #XOR_ASSIGN
-        #OR_ASSIGN
-#expression:
-        #assignment_expression 
-        #expression COMMA assignment_expression 
-#constant_expression:
-        #conditional_expression 
-#declaration:
-        #function_prototype SEMICOLON 
-        #init_declarator_list SEMICOLON 
-        #PRECISION precision_qualifier type_specifier_no_prec SEMICOLON
-#function_prototype:
-        #function_declarator RIGHT_PAREN 
-#function_declarator:
-        #function_header 
-        #function_header_with_parameters 
-#function_header_with_parameters:
-        #function_header parameter_declaration 
-        #function_header_with_parameters COMMA parameter_declaration 
-#function_header:
-        #fully_specified_type IDENTIFIER LEFT_PAREN 
-#parameter_declarator:
-        #type_specifier IDENTIFIER 
-        #type_specifier IDENTIFIER LEFT_BRACKET constant_expression RIGHT_BRACKET 
-#parameter_declaration:
-        #parameter_type_qualifier parameter_qualifier parameter_declarator 
-        #parameter_qualifier parameter_declarator 
-        #parameter_type_qualifier parameter_qualifier parameter_type_specifier 
-        #parameter_qualifier parameter_type_specifier 
-#parameter_qualifier:
-        #/* empty */
-        #IN 
-        #OUT 
-        #INOUT 
-#parameter_type_specifier:
-        #type_specifier 
-#init_declarator_list:
-        #single_declaration 
-        #init_declarator_list COMMA IDENTIFIER 
-        #init_declarator_list COMMA IDENTIFIER LEFT_BRACKET  RIGHT_BRACKET 
-        #init_declarator_list COMMA IDENTIFIER LEFT_BRACKET constant_expression
-                                                                                                      #RIGHT_BRACKET 
-        #init_declarator_list COMMA IDENTIFIER LEFT_BRACKET 
-                                                                                                     #RIGHT_BRACKET EQUAL initializer 
-        #init_declarator_list COMMA IDENTIFIER LEFT_BRACKET constant_expression
-                                                                                                     #RIGHT_BRACKET EQUAL initializer
-        #init_declarator_list COMMA IDENTIFIER EQUAL initializer 
-#single_declaration:
-        #fully_specified_type 
-        #fully_specified_type IDENTIFIER 
-        #fully_specified_type IDENTIFIER LEFT_BRACKET  RIGHT_BRACKET 
-        #fully_specified_type IDENTIFIER LEFT_BRACKET constant_expression RIGHT_BRACKET 
-        #fully_specified_type IDENTIFIER LEFT_BRACKET RIGHT_BRACKET EQUAL initializer 
-        #fully_specified_type IDENTIFIER LEFT_BRACKET constant_expression 
-        #fully_specified_type IDENTIFIER EQUAL initializer 
-        #INVARIANT IDENTIFIER   // Vertex only.
-#// Grammar Note:  No 'enum', or 'typedef'.
-#fully_specified_type:
-        #type_specifier 
-        #type_qualifier type_specifier 
-#invariant_qualifier:
-        #INVARIANT
-#interpolation_qualifier:
-        #SMOOTH
-        #FLAT
-        #NOPERSPECTIVE
+def p_primary_expression(t): 
+    'primary_expression: variable_identifier | INTCONSTANT | UINTCONSTANT | FLOATCONSTANT | BOOLCONSTANT | LEFT_PAREN expression RIGHT_PAREN'
+    pass
+
+def p_postfix_expression(t):
+    'postfix_expression: primary_expression | postfix_expression LEFT_BRACKET integer_expression RIGHT_BRACKET | function_call | postfix_expression DOT FIELD_SELECTION | postfix_expression INC_OP | postfix_expression DEC_OP'
+    pass
+
+def p_integer_expression(t):
+    'integer_expression: expression'
+    pass
+
+def p_function_call(t):
+    'function_call: function_call_or_method'
+    pass
+
+def p_function_call_or_method(t):
+    'function_call_or_method: function_call_generic | postfix_expression DOT function_call_generic'
+    pass
+
+def p_function_call_generic(t):
+    'function_call_generic: function_call_header_with_parameters RIGHT_PAREN | function_call_header_no_parameters RIGHT_PAREN'
+    pass
+
+def p_function_call_header_no_parameters(t):
+    'function_call_header_no_parameters: function_call_header VOID | function_call_header'
+    pass
+
+def p_function_call_header_with_parameters(t):
+    'function_call_header_with_parameters: function_call_header assignment_expression | function_call_header_with_parameters COMMA assignment_expression'
+    pass
+
+def p_function_call_header(t):
+    'function_call_header: function_identifier LEFT_PAREN'
+    pass
+
+# Grammar Note: Constructors look like functions, but lexical analysis recognized most of them as
+# keywords.  They are now recognized through “type_specifier”.
+def p_function_identifier(t):
+    'function_identifier: type_specifier | IDENTIFIER | FIELD_SELECTION'
+    pass
+
+def p_unary_expression(t):
+    'unary_expression: postfix_expression | INC_OP unary_expression | DEC_OP unary_expression | unary_operator unary_expression'
+    pass
+
+# Grammar Note:  No traditional style type casts.
+def p_unary_operator(t):
+    'unary_operator: PLUS | DASH | BANG | TILDE'
+    pass
+
+# Grammar Note:  No '*' or '&' unary ops.  Pointers are not supported.
+def p_multiplicative_expression(t):
+    'multiplicative_expression: unary_expression | multiplicative_expression STAR unary_expression | multiplicative_expression SLASH unary_expression |  multiplicative_expression PERCENT unary_expression'
+    pass
+
+def p_additive_expression(t):
+    'additive_expression: multiplicative_expression | additive_expression PLUS multiplicative_expression | additive_expression DASH multiplicative_expression'
+    pass
+
+def p_shift_expression(t):
+    'shift_expression: additive_expression | shift_expression LEFT_OP additive_expression | shift_expression RIGHT_OP additive_expression'
+    pass
+
+def p_relational_expression(t):
+    'relational_expression: shift_expression | relational_expression LEFT_ANGLE shift_expression | relational_expression RIGHT_ANGLE shift_expression |  relational_expression LE_OP shift_expression | relational_expression GE_OP shift_expression'
+    pass
+
+def p_equality_expression(t):
+    'equality_expression: relational_expression | equality_expression EQ_OP relational_expression | equality_expression NE_OP relational_expression'
+    pass
+
+def p_and_expression(t):
+    'and_expression: equality_expression | and_expression AMPERSAND equality_expression'
+    pass
+
+def p_exclusive_or_expression(t):
+    'exclusive_or_expression: and_expression | exclusive_or_expression CARET and_expression'
+    pass
+
+def p_inclusive_or_expression(t):
+    'inclusive_or_expression: exclusive_or_expression | inclusive_or_expression VERTICAL_BAR exclusive_or_expression'
+    pass
+
+def p_logical_and_expression(t):
+    'logical_and_expression: inclusive_or_expression | logical_and_expression AND_OP inclusive_or_expression'
+    pass
+
+def p_logical_xor_expression(t):
+    'logical_xor_expression: logical_and_expression | logical_xor_expression XOR_OP logical_and_expression'
+    pass
+
+def p_logical_or_expression(t):
+    'logical_or_expression: logical_xor_expression | logical_or_expression OR_OP logical_xor_expression'
+    pass
+
+def p_conditional_expression(t):
+    'conditional_expression: logical_or_expression | logical_or_expression QUESTION expression COLON assignment_expression'
+    pass
+
+def p_assignment_expression(t):
+    'assignment_expression: conditional_expression | unary_expression assignment_operator assignment_expression'
+    pass
+
+def p_assignment_operator(t):
+    'assignment_operator: EQUAL | MUL_ASSIGN | DIV_ASSIGN | MOD_ASSIGN | ADD_ASSIGN | SUB_ASSIGN | LEFT_ASSIGN | RIGHT_ASSIGN | AND_ASSIGN | XOR_ASSIGN | OR_ASSIGN'
+    pass
+
+def p_expression(t):
+    'expression: assignment_expression | expression COMMA assignment_expression'
+    pass
+
+def p_constant_expression(t):
+    'constant_expression: conditional_expression'
+    pass
+
+def p_declaration(t):
+    'declaration: function_prototype SEMICOLON | init_declarator_list SEMICOLON | PRECISION precision_qualifier type_specifier_no_prec SEMICOLON'
+    pass
+
+def p_function_prototype(t):
+    'function_prototype: function_declarator RIGHT_PAREN'
+    pass
+
+def p_function_declarator(t):
+    'function_declarator: function_header | function_header_with_parameters'
+    pass
+
+def p_function_header_with_parameters(t):
+    'function_header_with_parameters: function_header parameter_declaration | function_header_with_parameters COMMA parameter_declaration'
+    pass
+
+def p_function_header(t):
+    'function_header: fully_specified_type IDENTIFIER LEFT_PAREN'
+    pass
+
+def p_parameter_declarator(t):
+    'parameter_declarator: type_specifier IDENTIFIER | type_specifier IDENTIFIER LEFT_BRACKET constant_expression RIGHT_BRACKET'
+    pass
+
+def p_parameter_declaration(t):
+    'parameter_declaration: parameter_type_qualifier parameter_qualifier parameter_declarator | parameter_qualifier parameter_declarator | parameter_type_qualifier parameter_qualifier parameter_type_specifier | parameter_qualifier parameter_type_specifier'
+    pass
+
+def p_parameter_qualifier(t):
+    'parameter_qualifier: | IN | OUT | INOUT'
+    pass
+
+def p_parameter_type_specifier(t):
+    'parameter_type_specifier: type_specifier'
+    pass
+
+def p_init_declarator_list(t):
+    'init_declarator_list: single_declaration | init_declarator_list COMMA IDENTIFIER | init_declarator_list COMMA IDENTIFIER LEFT_BRACKET  RIGHT_BRACKET | init_declarator_list COMMA IDENTIFIER LEFT_BRACKET constant_expression RIGHT_BRACKET | init_declarator_list COMMA IDENTIFIER LEFT_BRACKET RIGHT_BRACKET EQUAL initializer | init_declarator_list COMMA IDENTIFIER LEFT_BRACKET constant_expression RIGHT_BRACKET EQUAL initializer | init_declarator_list COMMA IDENTIFIER EQUAL initializer'
+    pass
+
+def p_single_declaration(t):
+    'single_declaration: fully_specified_type | fully_specified_type IDENTIFIER | fully_specified_type IDENTIFIER LEFT_BRACKET  RIGHT_BRACKET | fully_specified_type IDENTIFIER LEFT_BRACKET constant_expression RIGHT_BRACKET | fully_specified_type IDENTIFIER LEFT_BRACKET RIGHT_BRACKET EQUAL initializer | fully_specified_type IDENTIFIER LEFT_BRACKET constant_expression | fully_specified_type IDENTIFIER EQUAL initializer | INVARIANT IDENTIFIER'
+    pass
+
+# Grammar Note:  No 'enum', or 'typedef'.
+def p_fully_specified_type(t):
+    'fully_specified_type: type_specifier | type_qualifier type_specifier'
+    pass
+
+def p_invariant_qualifier(t):
+    'invariant_qualifier: INVARIANT'
+    pass
+
+def p_interpolation_qualifier(t):
+    'interpolation_qualifier: SMOOTH | FLAT | NOPERSPECTIVE'
+    pass
+
 #parameter_type_qualifier:
         #CONST
 #type_qualifier:
