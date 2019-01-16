@@ -377,177 +377,144 @@ def p_interpolation_qualifier(t):
     'interpolation_qualifier: SMOOTH | FLAT | NOPERSPECTIVE'
     pass
 
-#parameter_type_qualifier:
-        #CONST
-#type_qualifier:
-        #storage_qualifier
-        #interpolation_qualifier type_qualifier
-        #invariant_qualifier type_qualifier
-        #invariant_qualifier interpolation_qualifier type_qualifier
-#storage_qualifier:
-        #CONST 
-        #ATTRIBUTE   // Vertex only.
-        #VARYING 
-        #CENTROID VARYING
-        #IN
-        #OUT
-        #CENTROID IN
-        #CENTROID OUT
-        #UNIFORM 
-#type_specifier:
-        #type_specifier_no_prec
-        #precision_qualifier type_specifier_no_prec
-#type_specifier_no_prec:
-        #type_specifier_nonarray 
-       #type_specifier_nonarray LEFT_BRACKET RIGHT_BRACKET 
-       #type_specifier_nonarray LEFT_BRACKET constant_expression RIGHT_BRACKET 
-#type_specifier_nonarray:
-        #VOID 
-        #FLOAT 
-        #INT
-        #UINT
-        #BOOL 
-        #VEC2 
-        #VEC3 
-        #VEC4 
-        #BVEC2 
-        #BVEC3 
-        #BVEC4 
-        #IVEC2 
-        #IVEC3 
-        #IVEC4 
-        #UVEC2
-        #UVEC3
-        #UVEC4
-        #MAT2
-        #MAT3
-        #MAT4
-        #MAT2X2 
-        #MAT2X3 
-        #MAT2X4
-        #MAT3X2 
-        #MAT3X3 
-        #MAT3X4
-        #MAT4X2 
-        #MAT4X3 
-        #MAT4X4
-        #SAMPLER1D
-        #SAMPLER2D
-        #SAMPLER3D
-        #SAMPLERCUBE
-        #SAMPLER1DSHADOW
-        #SAMPLER2DSHADOW
-        #SAMPLERCUBESHADOW 
-        #SAMPLER1DARRAY 
-        #SAMPLER2DARRAY 
-        #SAMPLER1DARRAYSHADOW
-        #SAMPLER2DARRAYSHADOW 
-        #ISAMPLER1D 
-        #ISAMPLER2D 
-        #ISAMPLER3D 
-        #ISAMPLERCUBE
-        #ISAMPLER1DARRAY 
-        #ISAMPLER2DARRAY 
-        #USAMPLER1D 
-        #USAMPLER2D 
-        #USAMPLER3D
-        #USAMPLERCUBE 
-        #USAMPLER1DARRAY 
-        #USAMPLER2DARRAY
-        #struct_specifier
-        #TYPE_NAME 
-#precision_qualifier:
-        #HIGH_PRECISION
-        #MEDIUM_PRECISION
-        #LOW_PRECISION
-#struct_specifier:
-        #STRUCT IDENTIFIER LEFT_BRACE struct_declaration_list RIGHT_BRACE 
-        #STRUCT LEFT_BRACE struct_declaration_list RIGHT_BRACE 
-#struct_declaration_list:
-        #struct_declaration 
-        #struct_declaration_list struct_declaration 
-#struct_declaration:
-        #type_specifier struct_declarator_list SEMICOLON 
-#struct_declarator_list:
-        #struct_declarator 
-        #struct_declarator_list COMMA struct_declarator 
-#struct_declarator:
-        #IDENTIFIER 
-        #IDENTIFIER LEFT_BRACKET constant_expression RIGHT_BRACKET 
-#initializer:
-        #assignment_expression 
-#declaration_statement:
-        #declaration 
-#statement:
-        #compound_statement 
-        #simple_statement 
-#// Grammar Note:  labeled statements for SWITCH only; 'goto' is not supported.
-#simple_statement:
-        #declaration_statement 
-        #expression_statement 
-        #selection_statement
-        #switch_statement 
-        #case_label
-        #iteration_statement 
-        #jump_statement 
-#compound_statement:
-        #LEFT_BRACE RIGHT_BRACE 
-        #LEFT_BRACE statement_list RIGHT_BRACE 
-#statement_no_new_scope:
-        #compound_statement_no_new_scope 
-        #simple_statement 
-#compound_statement_no_new_scope:
-        #LEFT_BRACE RIGHT_BRACE 
-        #LEFT_BRACE statement_list RIGHT_BRACE 
-#statement_list:
-        #statement 
-        #statement_list statement 
-#expression_statement:
-        #SEMICOLON 
-        #expression SEMICOLON 
-#selection_statement:
-        #IF LEFT_PAREN expression RIGHT_PAREN selection_rest_statement 
-#selection_rest_statement:
-        #statement ELSE statement 
-        #statement 
-#condition:
-        #expression 
-        #fully_specified_type IDENTIFIER EQUAL initializer 
-#switch_statement:
-        #SWITCH LEFT_PAREN expression RIGHT_PAREN LEFT_BRACE switch_statement_list
-#RIGHT_BRACE
-#switch_statement_list:
-        #/* nothing */
-        #statement_list
-#case_label:
-        #CASE expression COLON
-        #DEFAULT COLON
-#iteration_statement:
-        #WHILE LEFT_PAREN condition RIGHT_PAREN statement_no_new_scope 
-        #DO statement WHILE LEFT_PAREN expression RIGHT_PAREN SEMICOLON 
-        #FOR LEFT_PAREN for_init_statement for_rest_statement RIGHT_PAREN
-#statement_no_new_scope 
-#for_init_statement:
-        #expression_statement 
-        #declaration_statement 
-#conditionopt:
-        #condition 
-        #/* empty */
-#for_rest_statement:
-        #conditionopt SEMICOLON 
-        #conditionopt SEMICOLON expression 
-#jump_statement:
-        #CONTINUE SEMICOLON 
-        #BREAK SEMICOLON 
-        #RETURN SEMICOLON 
-        #RETURN expression SEMICOLON 
-        #DISCARD SEMICOLON   // Fragment shader only.
-#// Grammar Note:  No 'goto'.  Gotos are not supported.
-#translation_unit:
-        #external_declaration 
-        #translation_unit external_declaration 
-#external_declaration:
-        #function_definition 
-        #declaration 
-#function_definition:
-        #function_prototype compound_statement_no_new_scope 
+def p_parameter_type_qualifier(t):
+    'parameter_type_qualifier: CONST'
+    pass
+
+def p_type_qualifier(t):
+    'type_qualifier: storage_qualifier | interpolation_qualifier type_qualifier | invariant_qualifier type_qualifier | invariant_qualifier interpolation_qualifier type_qualifier'
+    pass
+
+def p_storage_qualifier(t):
+    'storage_qualifier: | CONST | ATTRIBUTE | VARYING | CENTROID VARYING | IN | OUT | CENTROID IN | CENTROID OUT | UNIFORM'
+    pass
+
+def p_type_specifier(t):
+    'type_specifier: type_specifier_no_prec | precision_qualifier type_specifier_no_prec'
+    pass
+
+def p_type_specifier_no_prec(t):
+    'type_specifier_no_prec: type_specifier_nonarray | type_specifier_nonarray LEFT_BRACKET RIGHT_BRACKET | type_specifier_nonarray LEFT_BRACKET constant_expression RIGHT_BRACKET'
+    pass
+
+def p_type_specifier_noarray(t):
+    'type_specifier_nonarray: VOID | FLOAT | INT | UINT | BOOL | VEC2 | VEC3 | VEC4 | BVEC2 | BVEC3 | BVEC4 | IVEC2 | IVEC3 | IVEC4 | UVEC2 | UVEC3 | UVEC4 | MAT2 | MAT3 | MAT4 | MAT2X2 | MAT2X3 | MAT2X4 | MAT3X2 | MAT3X3 | MAT3X4 | MAT4X2 | MAT4X3 | MAT4X4 | SAMPLER1D | SAMPLER2D | SAMPLER3D | SAMPLERCUBE | SAMPLER1DSHADOW | SAMPLER2DSHADOW | SAMPLERCUBESHADOW | SAMPLER1DARRAY | SAMPLER2DARRAY | SAMPLER1DARRAYSHADOW | SAMPLER2DARRAYSHADOW | ISAMPLER1D | ISAMPLER2D | ISAMPLER3D | ISAMPLERCUBE | ISAMPLER1DARRAY | ISAMPLER2DARRAY | USAMPLER1D | USAMPLER2D | USAMPLER3D | USAMPLERCUBE | USAMPLER1DARRAY | USAMPLER2DARRAY | struct_specifier | TYPE_NAME'
+    pass
+
+def p_precision_qualifier(t):
+    'precision_qualifier: HIGH_PRECISION | MEDIUM_PRECISION | LOW_PRECISION'
+    pass
+
+def p_struct_specifier(t):
+    'struct_specifier: STRUCT IDENTIFIER LEFT_BRACE struct_declaration_list RIGHT_BRACE | STRUCT LEFT_BRACE struct_declaration_list RIGHT_BRACE'
+    pass
+
+def p_struct_declaration_list(t):
+    'struct_declaration_list: struct_declaration | struct_declaration_list struct_declaration'
+    pass
+
+def p_struct_declaration(t):
+    'struct_declaration: type_specifier struct_declarator_list SEMICOLON'
+    pass
+
+def p_struct_declarator_list(t):
+    'struct_declarator_list: struct_declarator | struct_declarator_list COMMA struct_declarator'
+    pass
+
+def p_struct_declarator(t):
+    'struct_declarator: IDENTIFIER | IDENTIFIER LEFT_BRACKET constant_expression RIGHT_BRACKET'
+    pass
+
+def p_initializer(t):
+    'initializer: assignment_expression'
+    pass
+
+def p_declaration_statement(t):
+    'declaration_statement: | declaration'
+    pass
+
+def p_statement(t):
+    'statement: compound_statement | simple_statement'
+    pass
+
+# Grammar Note:  labeled statements for SWITCH only; 'goto' is not supported.
+def p_simple_statement(t):
+    'simple_statement: declaration_statement | expression_statement | selection_statement | switch_statement | case_label | iteration_statement | jump_statement'
+    pass
+
+def p_compound_statement(t):
+    'compound_statement: LEFT_BRACE RIGHT_BRACE | LEFT_BRACE statement_list RIGHT_BRACE'
+    pass
+
+def p_statement_no_new_scope(t):
+    'statement_no_new_scope: compound_statement_no_new_scope | simple_statement'
+    pass
+
+def p_compound_statement_no_new_scope(t):
+    'compound_statement_no_new_scope: LEFT_BRACE RIGHT_BRACE | LEFT_BRACE statement_list RIGHT_BRACE'
+    pass
+
+def p_statement_list(t):
+    'statement_list: statement | statement_list statement'
+    pass
+
+def p_expression_statement(t):
+    'expression_statement: SEMICOLON | expression SEMICOLON'
+    pass
+
+def p_selection_statement(t):
+    'selection_statement: IF LEFT_PAREN expression RIGHT_PAREN selection_rest_statement'
+    pass
+
+def p_selection_rest_statement(t):
+    'selection_rest_statement: statement ELSE statement | statement'
+    pass
+
+def p_condition(t):
+    'condition: expression | fully_specified_type IDENTIFIER EQUAL initializer'
+    pass
+
+def p_switch_statement(t):
+    'switch_statement: SWITCH LEFT_PAREN expression RIGHT_PAREN LEFT_BRACE switch_statement_list RIGHT_BRACE'
+    pass
+
+def p_switch_statement_list(t):
+    'switch_statement_list: | statement_list'
+    pass
+
+def p_case_label(t):
+    'case_label: CASE expression COLON | DEFAULT COLON'
+    pass
+
+def p_iteration_statement(t):
+    'iteration_statement: WHILE LEFT_PAREN condition RIGHT_PAREN statement_no_new_scope | DO statement WHILE LEFT_PAREN expression RIGHT_PAREN SEMICOLON | FOR LEFT_PAREN for_init_statement for_rest_statement RIGHT_PAREN | statement_no_new_scope'
+    pass
+
+def p_for_init_statement(t):
+    'for_init_statement: expression_statement | declaration_statement'
+    pass
+
+def p_conditionopt(t):
+    'conditionopt: condition | '
+    pass
+
+def p_for_rest_statement(t):
+    'for_rest_statement: conditionopt SEMICOLON | conditionopt SEMICOLON expression'
+    pass
+
+# Grammar Note:  No 'goto'.  Gotos are not supported.
+def p_jump_statement(t):
+    'jump_statement: CONTINUE SEMICOLON | BREAK SEMICOLON | RETURN SEMICOLON | RETURN expression SEMICOLON | DISCARD SEMICOLON '
+    pass
+
+def p_translation_unit(t):
+    'translation_unit: external_declaration | translation_unit external_declaration'
+    pass
+
+def p_external_declaration(t):
+    'external_declaration: function_definition | declaration'
+    pass
+
+def p_function_definition(t):
+    'function_definition: function_prototype compound_statement_no_new_scope'
+    pass
