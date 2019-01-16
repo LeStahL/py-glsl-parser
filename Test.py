@@ -16,9 +16,23 @@
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #
 
-import re # Regular expressions
-import Lexer # Lexer base class
-import enum # Enumerations
+from Parser130 import *
 
-expr = re.compile(r'((\d*\.{1}\d+)|(\d+\.{1}\d*)){1}(e{1}[+-]?\d+)?')
-print(expr.match(input()))
+import argparse
+
+# Parse command line arguments
+parser = argparse.ArgumentParser(description='py-glsl-parser test.')
+args, rest = parser.parse_known_args()
+
+# Exit if inconsistent argument combinations are supplied
+if rest == []:
+    print("No input present. Doing nothing. Type 'shader_minifier -h' for help.")
+    exit()
+
+string = ""
+with open(rest[0], 'rt') as f:
+    string = f.read()
+    f.close()
+
+AST = parse(string)
+print(AST.toString())

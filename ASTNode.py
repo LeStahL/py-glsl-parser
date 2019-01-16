@@ -65,4 +65,9 @@ class ASTNode:
             buf += c.toString()
         buf += ' ' * d + '}'
         return buf
+    
+    def root(self):
+        if self.hasParent():
+            return self.parent()
+        return self
 

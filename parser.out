@@ -1,0 +1,509 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> variable_identifier
+Rule 1     variable_identifier -> IDENTIFIER
+Rule 2     primary_expression -> variable_identifier
+Rule 3     primary_expression -> INTCONSTANT
+Rule 4     primary_expression -> UINTCONSTANT
+Rule 5     primary_expression -> FLOATCONSTANT
+Rule 6     primary_expression -> BOOLCONSTANT
+Rule 7     primary_expression -> LEFT_PAREN expression RIGHT_PAREN
+Rule 8     postfix_expression -> primary_expression
+Rule 9     postfix_expression -> postfix_expression LEFT_BRACKET integer_expression RIGHT_BRACKET
+Rule 10    postfix_expression -> function_call
+Rule 11    postfix_expression -> postfix_expression DOT FIELD_SELECTION
+Rule 12    postfix_expression -> postfix_expression INC_OP
+Rule 13    postfix_expression -> postfix_expression DEC_OP
+Rule 14    integer_expression -> expression
+Rule 15    function_call -> function_call_or_method
+Rule 16    function_call_or_method -> function_call_generic
+Rule 17    function_call_or_method -> postfix_expression DOT function_call_generic
+Rule 18    function_call_generic -> function_call_header_with_parameters RIGHT_PAREN
+Rule 19    function_call_generic -> function_call_header_no_parameters RIGHT_PAREN
+Rule 20    function_call_header_no_parameters -> function_call_header VOID
+Rule 21    function_call_header_no_parameters -> function_call_header
+Rule 22    function_call_header_with_parameters -> function_call_header assignment_expression
+Rule 23    function_call_header_with_parameters -> function_call_header_with_parameters COMMA assignment_expression
+Rule 24    function_call_header -> function_identifier LEFT_PAREN
+Rule 25    function_identifier -> type_specifier
+Rule 26    function_identifier -> IDENTIFIER
+Rule 27    function_identifier -> FIELD_SELECTION
+Rule 28    unary_expression -> postfix_expression
+Rule 29    unary_expression -> INC_OP unary_expression
+Rule 30    unary_expression -> DEC_OP unary_expression
+Rule 31    unary_expression -> unary_operator unary_expression
+Rule 32    unary_operator -> PLUS
+Rule 33    unary_operator -> DASH
+Rule 34    unary_operator -> BANG
+Rule 35    unary_operator -> TILDE
+Rule 36    multiplicative_expression -> unary_expression
+Rule 37    multiplicative_expression -> multiplicative_expression STAR unary_expression
+Rule 38    multiplicative_expression -> multiplicative_expression SLASH unary_expression
+Rule 39    multiplicative_expression -> multiplicative_expression PERCENT unary_expression
+Rule 40    additive_expression -> multiplicative_expression
+Rule 41    additive_expression -> additive_expression PLUS multiplicative_expression
+Rule 42    additive_expression -> additive_expression DASH multiplicative_expression
+Rule 43    shift_expression -> additive_expression
+Rule 44    shift_expression -> shift_expression LEFT_OP additive_expression
+Rule 45    shift_expression -> shift_expression RIGHT_OP additive_expression
+Rule 46    relational_expression -> shift_expression
+Rule 47    relational_expression -> relational_expression LEFT_ANGLE shift_expression
+Rule 48    relational_expression -> relational_expression RIGHT_ANGLE shift_expression
+Rule 49    relational_expression -> relational_expression LE_OP shift_expression
+Rule 50    relational_expression -> relational_expression GE_OP shift_expression
+Rule 51    equality_expression -> relational_expression
+Rule 52    equality_expression -> equality_expression EQ_OP relational_expression
+Rule 53    equality_expression -> equality_expression NE_OP relational_expression
+Rule 54    and_expression -> equality_expression
+Rule 55    and_expression -> and_expression AMPERSAND equality_expression
+Rule 56    exclusive_or_expression -> and_expression
+Rule 57    exclusive_or_expression -> exclusive_or_expression CARET and_expression
+Rule 58    inclusive_or_expression -> exclusive_or_expression
+Rule 59    inclusive_or_expression -> inclusive_or_expression VERTICAL_BAR exclusive_or_expression
+Rule 60    logical_and_expression -> inclusive_or_expression
+Rule 61    logical_and_expression -> logical_and_expression AND_OP inclusive_or_expression
+Rule 62    logical_xor_expression -> logical_and_expression
+Rule 63    logical_xor_expression -> logical_xor_expression XOR_OP logical_and_expression
+Rule 64    logical_or_expression -> logical_xor_expression
+Rule 65    logical_or_expression -> logical_or_expression OR_OP logical_xor_expression
+Rule 66    conditional_expression -> logical_or_expression
+Rule 67    conditional_expression -> logical_or_expression QUESTION expression COLON assignment_expression
+Rule 68    assignment_expression -> conditional_expression
+Rule 69    assignment_expression -> unary_expression assignment_operator assignment_expression
+Rule 70    assignment_operator -> EQUAL
+Rule 71    assignment_operator -> MUL_ASSIGN
+Rule 72    assignment_operator -> DIV_ASSIGN
+Rule 73    assignment_operator -> MOD_ASSIGN
+Rule 74    assignment_operator -> ADD_ASSIGN
+Rule 75    assignment_operator -> SUB_ASSIGN
+Rule 76    assignment_operator -> LEFT_ASSIGN
+Rule 77    assignment_operator -> RIGHT_ASSIGN
+Rule 78    assignment_operator -> AND_ASSIGN
+Rule 79    assignment_operator -> XOR_ASSIGN
+Rule 80    assignment_operator -> OR_ASSIGN
+Rule 81    expression -> assignment_expression
+Rule 82    expression -> expression COMMA assignment_expression
+Rule 83    constant_expression -> conditional_expression
+Rule 84    declaration -> function_prototype SEMICOLON
+Rule 85    declaration -> init_declarator_list SEMICOLON
+Rule 86    declaration -> PRECISION precision_qualifier type_specifier_no_prec SEMICOLON
+Rule 87    function_prototype -> function_declarator RIGHT_PAREN
+Rule 88    function_declarator -> function_header
+Rule 89    function_declarator -> function_header_with_parameters
+Rule 90    function_header_with_parameters -> function_header parameter_declaration
+Rule 91    function_header_with_parameters -> function_header_with_parameters COMMA parameter_declaration
+Rule 92    function_header -> fully_specified_type IDENTIFIER LEFT_PAREN
+Rule 93    parameter_declarator -> type_specifier IDENTIFIER
+Rule 94    parameter_declarator -> type_specifier IDENTIFIER LEFT_BRACKET constant_expression RIGHT_BRACKET
+Rule 95    parameter_declaration -> parameter_type_qualifier parameter_qualifier parameter_declarator
+Rule 96    parameter_declaration -> parameter_qualifier parameter_declarator
+Rule 97    parameter_declaration -> parameter_type_qualifier parameter_qualifier parameter_type_specifier
+Rule 98    parameter_declaration -> parameter_qualifier parameter_type_specifier
+Rule 99    parameter_qualifier -> <empty>
+Rule 100   parameter_qualifier -> IN
+Rule 101   parameter_qualifier -> OUT
+Rule 102   parameter_qualifier -> INOUT
+Rule 103   parameter_type_specifier -> type_specifier
+Rule 104   init_declarator_list -> single_declaration
+Rule 105   init_declarator_list -> init_declarator_list COMMA IDENTIFIER
+Rule 106   init_declarator_list -> init_declarator_list COMMA IDENTIFIER LEFT_BRACKET RIGHT_BRACKET
+Rule 107   init_declarator_list -> init_declarator_list COMMA IDENTIFIER LEFT_BRACKET constant_expression RIGHT_BRACKET
+Rule 108   init_declarator_list -> init_declarator_list COMMA IDENTIFIER LEFT_BRACKET RIGHT_BRACKET EQUAL initializer
+Rule 109   init_declarator_list -> init_declarator_list COMMA IDENTIFIER LEFT_BRACKET constant_expression RIGHT_BRACKET EQUAL initializer
+Rule 110   init_declarator_list -> init_declarator_list COMMA IDENTIFIER EQUAL initializer
+Rule 111   single_declaration -> fully_specified_type
+Rule 112   single_declaration -> fully_specified_type IDENTIFIER
+Rule 113   single_declaration -> fully_specified_type IDENTIFIER LEFT_BRACKET RIGHT_BRACKET
+Rule 114   single_declaration -> fully_specified_type IDENTIFIER LEFT_BRACKET constant_expression RIGHT_BRACKET
+Rule 115   single_declaration -> fully_specified_type IDENTIFIER LEFT_BRACKET RIGHT_BRACKET EQUAL initializer
+Rule 116   single_declaration -> fully_specified_type IDENTIFIER LEFT_BRACKET constant_expression
+Rule 117   single_declaration -> fully_specified_type IDENTIFIER EQUAL initializer
+Rule 118   single_declaration -> INVARIANT IDENTIFIER
+Rule 119   fully_specified_type -> type_specifier
+Rule 120   fully_specified_type -> type_qualifier type_specifier
+Rule 121   invariant_qualifier -> INVARIANT
+Rule 122   interpolation_qualifier -> SMOOTH
+Rule 123   interpolation_qualifier -> FLAT
+Rule 124   interpolation_qualifier -> NOPERSPECTIVE
+Rule 125   parameter_type_qualifier -> CONST
+Rule 126   type_qualifier -> storage_qualifier
+Rule 127   type_qualifier -> interpolation_qualifier type_qualifier
+Rule 128   type_qualifier -> invariant_qualifier type_qualifier
+Rule 129   type_qualifier -> invariant_qualifier interpolation_qualifier type_qualifier
+Rule 130   storage_qualifier -> <empty>
+Rule 131   storage_qualifier -> CONST
+Rule 132   storage_qualifier -> ATTRIBUTE
+Rule 133   storage_qualifier -> VARYING
+Rule 134   storage_qualifier -> CENTROID VARYING
+Rule 135   storage_qualifier -> IN
+Rule 136   storage_qualifier -> OUT
+Rule 137   storage_qualifier -> CENTROID IN
+Rule 138   storage_qualifier -> CENTROID OUT
+Rule 139   storage_qualifier -> UNIFORM
+Rule 140   type_specifier -> type_specifier_no_prec
+Rule 141   type_specifier -> precision_qualifier type_specifier_no_prec
+Rule 142   type_specifier_no_prec -> type_specifier_nonarray
+Rule 143   type_specifier_no_prec -> type_specifier_nonarray LEFT_BRACKET RIGHT_BRACKET
+Rule 144   type_specifier_no_prec -> type_specifier_nonarray LEFT_BRACKET constant_expression RIGHT_BRACKET
+Rule 145   type_specifier_nonarray -> VOID
+Rule 146   type_specifier_nonarray -> FLOAT
+Rule 147   type_specifier_nonarray -> INT
+Rule 148   type_specifier_nonarray -> UINT
+Rule 149   type_specifier_nonarray -> BOOL
+Rule 150   type_specifier_nonarray -> VEC2
+Rule 151   type_specifier_nonarray -> VEC3
+Rule 152   type_specifier_nonarray -> VEC4
+Rule 153   type_specifier_nonarray -> BVEC2
+Rule 154   type_specifier_nonarray -> BVEC3
+Rule 155   type_specifier_nonarray -> BVEC4
+Rule 156   type_specifier_nonarray -> IVEC2
+Rule 157   type_specifier_nonarray -> IVEC3
+Rule 158   type_specifier_nonarray -> IVEC4
+Rule 159   type_specifier_nonarray -> UVEC2
+Rule 160   type_specifier_nonarray -> UVEC3
+Rule 161   type_specifier_nonarray -> UVEC4
+Rule 162   type_specifier_nonarray -> MAT2
+Rule 163   type_specifier_nonarray -> MAT3
+Rule 164   type_specifier_nonarray -> MAT4
+Rule 165   type_specifier_nonarray -> MAT2X2
+Rule 166   type_specifier_nonarray -> MAT2X3
+Rule 167   type_specifier_nonarray -> MAT2X4
+Rule 168   type_specifier_nonarray -> MAT3X2
+Rule 169   type_specifier_nonarray -> MAT3X3
+Rule 170   type_specifier_nonarray -> MAT3X4
+Rule 171   type_specifier_nonarray -> MAT4X2
+Rule 172   type_specifier_nonarray -> MAT4X3
+Rule 173   type_specifier_nonarray -> MAT4X4
+Rule 174   type_specifier_nonarray -> SAMPLER1D
+Rule 175   type_specifier_nonarray -> SAMPLER2D
+Rule 176   type_specifier_nonarray -> SAMPLER3D
+Rule 177   type_specifier_nonarray -> SAMPLERCUBE
+Rule 178   type_specifier_nonarray -> SAMPLER1DSHADOW
+Rule 179   type_specifier_nonarray -> SAMPLER2DSHADOW
+Rule 180   type_specifier_nonarray -> SAMPLERCUBESHADOW
+Rule 181   type_specifier_nonarray -> SAMPLER1DARRAY
+Rule 182   type_specifier_nonarray -> SAMPLER2DARRAY
+Rule 183   type_specifier_nonarray -> SAMPLER1DARRAYSHADOW
+Rule 184   type_specifier_nonarray -> SAMPLER2DARRAYSHADOW
+Rule 185   type_specifier_nonarray -> ISAMPLER1D
+Rule 186   type_specifier_nonarray -> ISAMPLER2D
+Rule 187   type_specifier_nonarray -> ISAMPLER3D
+Rule 188   type_specifier_nonarray -> ISAMPLERCUBE
+Rule 189   type_specifier_nonarray -> ISAMPLER1DARRAY
+Rule 190   type_specifier_nonarray -> ISAMPLER2DARRAY
+Rule 191   type_specifier_nonarray -> USAMPLER1D
+Rule 192   type_specifier_nonarray -> USAMPLER2D
+Rule 193   type_specifier_nonarray -> USAMPLER3D
+Rule 194   type_specifier_nonarray -> USAMPLERCUBE
+Rule 195   type_specifier_nonarray -> USAMPLER1DARRAY
+Rule 196   type_specifier_nonarray -> USAMPLER2DARRAY
+Rule 197   type_specifier_nonarray -> struct_specifier
+Rule 198   type_specifier_nonarray -> TYPE_NAME
+Rule 199   precision_qualifier -> HIGH_PRECISION
+Rule 200   precision_qualifier -> MEDIUM_PRECISION
+Rule 201   precision_qualifier -> LOW_PRECISION
+Rule 202   struct_specifier -> STRUCT IDENTIFIER LEFT_BRACE struct_declaration_list RIGHT_BRACE
+Rule 203   struct_specifier -> STRUCT LEFT_BRACE struct_declaration_list RIGHT_BRACE
+Rule 204   struct_declaration_list -> struct_declaration
+Rule 205   struct_declaration_list -> struct_declaration_list struct_declaration
+Rule 206   struct_declaration -> type_specifier struct_declarator_list SEMICOLON
+Rule 207   struct_declarator_list -> struct_declarator
+Rule 208   struct_declarator_list -> struct_declarator_list COMMA struct_declarator
+Rule 209   struct_declarator -> IDENTIFIER
+Rule 210   struct_declarator -> IDENTIFIER LEFT_BRACKET constant_expression RIGHT_BRACKET
+Rule 211   initializer -> assignment_expression
+Rule 212   declaration_statement -> <empty>
+Rule 213   declaration_statement -> declaration
+Rule 214   statement -> compound_statement
+Rule 215   statement -> simple_statement
+Rule 216   simple_statement -> declaration_statement
+Rule 217   simple_statement -> expression_statement
+Rule 218   simple_statement -> selection_statement
+Rule 219   simple_statement -> switch_statement
+Rule 220   simple_statement -> case_label
+Rule 221   simple_statement -> iteration_statement
+Rule 222   simple_statement -> jump_statement
+Rule 223   compound_statement -> LEFT_BRACE RIGHT_BRACE
+Rule 224   compound_statement -> LEFT_BRACE statement_list RIGHT_BRACE
+Rule 225   statement_no_new_scope -> compound_statement_no_new_scope
+Rule 226   statement_no_new_scope -> simple_statement
+Rule 227   compound_statement_no_new_scope -> LEFT_BRACE RIGHT_BRACE
+Rule 228   compound_statement_no_new_scope -> LEFT_BRACE statement_list RIGHT_BRACE
+Rule 229   statement_list -> statement
+Rule 230   statement_list -> statement_list statement
+Rule 231   expression_statement -> SEMICOLON
+Rule 232   expression_statement -> expression SEMICOLON
+Rule 233   selection_statement -> IF LEFT_PAREN expression RIGHT_PAREN selection_rest_statement
+Rule 234   selection_rest_statement -> statement ELSE statement
+Rule 235   selection_rest_statement -> statement
+Rule 236   condition -> expression
+Rule 237   condition -> fully_specified_type IDENTIFIER EQUAL initializer
+Rule 238   switch_statement -> SWITCH LEFT_PAREN expression RIGHT_PAREN LEFT_BRACE switch_statement_list RIGHT_BRACE
+Rule 239   switch_statement_list -> <empty>
+Rule 240   switch_statement_list -> statement_list
+Rule 241   case_label -> CASE expression COLON
+Rule 242   case_label -> DEFAULT COLON
+Rule 243   iteration_statement -> WHILE LEFT_PAREN condition RIGHT_PAREN statement_no_new_scope
+Rule 244   iteration_statement -> DO statement WHILE LEFT_PAREN expression RIGHT_PAREN SEMICOLON
+Rule 245   iteration_statement -> FOR LEFT_PAREN for_init_statement for_rest_statement RIGHT_PAREN
+Rule 246   iteration_statement -> statement_no_new_scope
+Rule 247   for_init_statement -> expression_statement
+Rule 248   for_init_statement -> declaration_statement
+Rule 249   conditionopt -> condition
+Rule 250   conditionopt -> <empty>
+Rule 251   for_rest_statement -> conditionopt SEMICOLON
+Rule 252   for_rest_statement -> conditionopt SEMICOLON expression
+Rule 253   jump_statement -> CONTINUE SEMICOLON
+Rule 254   jump_statement -> BREAK SEMICOLON
+Rule 255   jump_statement -> RETURN SEMICOLON
+Rule 256   jump_statement -> RETURN expression SEMICOLON
+Rule 257   jump_statement -> DISCARD SEMICOLON
+Rule 258   translation_unit -> external_declaration
+Rule 259   translation_unit -> translation_unit external_declaration
+Rule 260   external_declaration -> function_definition
+Rule 261   external_declaration -> declaration
+Rule 262   function_definition -> function_prototype compound_statement_no_new_scope
+
+Terminals, with rules where they appear
+
+ADD_ASSIGN           : 74
+AMPERSAND            : 55
+AND_ASSIGN           : 78
+AND_OP               : 61
+ATTRIBUTE            : 132
+BANG                 : 34
+BOOL                 : 149
+BOOLCONSTANT         : 6
+BREAK                : 254
+BVEC2                : 153
+BVEC3                : 154
+BVEC4                : 155
+CARET                : 57
+CASE                 : 241
+CENTROID             : 134 137 138
+COLON                : 67 241 242
+COMMA                : 23 82 91 105 106 107 108 109 110 208
+CONST                : 125 131
+CONTINUE             : 253
+DASH                 : 33 42
+DEC_OP               : 13 30
+DEFAULT              : 242
+DISCARD              : 257
+DIV_ASSIGN           : 72
+DO                   : 244
+DOT                  : 11 17
+ELSE                 : 234
+EQUAL                : 70 108 109 110 115 117 237
+EQ_OP                : 52
+FIELD_SELECTION      : 11 27
+FLAT                 : 123
+FLOAT                : 146
+FLOATCONSTANT        : 5
+FOR                  : 245
+GE_OP                : 50
+HIGH_PRECISION       : 199
+IDENTIFIER           : 1 26 92 93 94 105 106 107 108 109 110 112 113 114 115 116 117 118 202 209 210 237
+IF                   : 233
+IN                   : 100 135 137
+INC_OP               : 12 29
+INOUT                : 102
+INT                  : 147
+INTCONSTANT          : 3
+INVARIANT            : 118 121
+ISAMPLER1D           : 185
+ISAMPLER1DARRAY      : 189
+ISAMPLER2D           : 186
+ISAMPLER2DARRAY      : 190
+ISAMPLER3D           : 187
+ISAMPLERCUBE         : 188
+IVEC2                : 156
+IVEC3                : 157
+IVEC4                : 158
+LEFT_ANGLE           : 47
+LEFT_ASSIGN          : 76
+LEFT_BRACE           : 202 203 223 224 227 228 238
+LEFT_BRACKET         : 9 94 106 107 108 109 113 114 115 116 143 144 210
+LEFT_OP              : 44
+LEFT_PAREN           : 7 24 92 233 238 243 244 245
+LE_OP                : 49
+LOW_PRECISION        : 201
+MAT2                 : 162
+MAT2X2               : 165
+MAT2X3               : 166
+MAT2X4               : 167
+MAT3                 : 163
+MAT3X2               : 168
+MAT3X3               : 169
+MAT3X4               : 170
+MAT4                 : 164
+MAT4X2               : 171
+MAT4X3               : 172
+MAT4X4               : 173
+MEDIUM_PRECISION     : 200
+MOD_ASSIGN           : 73
+MUL_ASSIGN           : 71
+NE_OP                : 53
+NOPERSPECTIVE        : 124
+OR_ASSIGN            : 80
+OR_OP                : 65
+OUT                  : 101 136 138
+PERCENT              : 39
+PLUS                 : 32 41
+PRECISION            : 86
+QUESTION             : 67
+RETURN               : 255 256
+RIGHT_ANGLE          : 48
+RIGHT_ASSIGN         : 77
+RIGHT_BRACE          : 202 203 223 224 227 228 238
+RIGHT_BRACKET        : 9 94 106 107 108 109 113 114 115 143 144 210
+RIGHT_OP             : 45
+RIGHT_PAREN          : 7 18 19 87 233 238 243 244 245
+SAMPLER1D            : 174
+SAMPLER1DARRAY       : 181
+SAMPLER1DARRAYSHADOW : 183
+SAMPLER1DSHADOW      : 178
+SAMPLER2D            : 175
+SAMPLER2DARRAY       : 182
+SAMPLER2DARRAYSHADOW : 184
+SAMPLER2DSHADOW      : 179
+SAMPLER3D            : 176
+SAMPLERCUBE          : 177
+SAMPLERCUBESHADOW    : 180
+SEMICOLON            : 84 85 86 206 231 232 244 251 252 253 254 255 256 257
+SLASH                : 38
+SMOOTH               : 122
+STAR                 : 37
+STRUCT               : 202 203
+SUB_ASSIGN           : 75
+SWITCH               : 238
+TILDE                : 35
+TYPE_NAME            : 198
+UINT                 : 148
+UINTCONSTANT         : 4
+UNIFORM              : 139
+USAMPLER1D           : 191
+USAMPLER1DARRAY      : 195
+USAMPLER2D           : 192
+USAMPLER2DARRAY      : 196
+USAMPLER3D           : 193
+USAMPLERCUBE         : 194
+UVEC2                : 159
+UVEC3                : 160
+UVEC4                : 161
+VARYING              : 133 134
+VEC2                 : 150
+VEC3                 : 151
+VEC4                 : 152
+VERTICAL_BAR         : 59
+VOID                 : 20 145
+WHILE                : 243 244
+XOR_ASSIGN           : 79
+XOR_OP               : 63
+error                : 
+
+Nonterminals, with rules where they appear
+
+additive_expression  : 41 42 43 44 45
+and_expression       : 55 56 57
+assignment_expression : 22 23 67 69 81 82 211
+assignment_operator  : 69
+case_label           : 220
+compound_statement   : 214
+compound_statement_no_new_scope : 225 262
+condition            : 243 249
+conditional_expression : 68 83
+conditionopt         : 251 252
+constant_expression  : 94 107 109 114 116 144 210
+declaration          : 213 261
+declaration_statement : 216 248
+equality_expression  : 52 53 54 55
+exclusive_or_expression : 57 58 59
+expression           : 7 14 67 82 232 233 236 238 241 244 252 256
+expression_statement : 217 247
+external_declaration : 258 259
+for_init_statement   : 245
+for_rest_statement   : 245
+fully_specified_type : 92 111 112 113 114 115 116 117 237
+function_call        : 10
+function_call_generic : 16 17
+function_call_header : 20 21 22
+function_call_header_no_parameters : 19
+function_call_header_with_parameters : 18 23
+function_call_or_method : 15
+function_declarator  : 87
+function_definition  : 260
+function_header      : 88 90
+function_header_with_parameters : 89 91
+function_identifier  : 24
+function_prototype   : 84 262
+inclusive_or_expression : 59 60 61
+init_declarator_list : 85 105 106 107 108 109 110
+initializer          : 108 109 110 115 117 237
+integer_expression   : 9
+interpolation_qualifier : 127 129
+invariant_qualifier  : 128 129
+iteration_statement  : 221
+jump_statement       : 222
+logical_and_expression : 61 62 63
+logical_or_expression : 65 66 67
+logical_xor_expression : 63 64 65
+multiplicative_expression : 37 38 39 40 41 42
+parameter_declaration : 90 91
+parameter_declarator : 95 96
+parameter_qualifier  : 95 96 97 98
+parameter_type_qualifier : 95 97
+parameter_type_specifier : 97 98
+postfix_expression   : 9 11 12 13 17 28
+precision_qualifier  : 86 141
+primary_expression   : 8
+relational_expression : 47 48 49 50 51 52 53
+selection_rest_statement : 233
+selection_statement  : 218
+shift_expression     : 44 45 46 47 48 49 50
+simple_statement     : 215 226
+single_declaration   : 104
+statement            : 229 230 234 234 235 244
+statement_list       : 224 228 230 240
+statement_no_new_scope : 243 246
+storage_qualifier    : 126
+struct_declaration   : 204 205
+struct_declaration_list : 202 203 205
+struct_declarator    : 207 208
+struct_declarator_list : 206 208
+struct_specifier     : 197
+switch_statement     : 219
+switch_statement_list : 238
+translation_unit     : 259
+type_qualifier       : 120 127 128 129
+type_specifier       : 25 93 94 103 119 120 206
+type_specifier_no_prec : 86 140 141
+type_specifier_nonarray : 142 143 144
+unary_expression     : 29 30 31 36 37 38 39 69
+unary_operator       : 31
+variable_identifier  : 2 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . variable_identifier
+    (1) variable_identifier -> . IDENTIFIER
+
+    IDENTIFIER      shift and go to state 2
+
+    variable_identifier            shift and go to state 1
+
+state 1
+
+    (0) S' -> variable_identifier .
+
+
+
+state 2
+
+    (1) variable_identifier -> IDENTIFIER .
+
+    $end            reduce using rule 1 (variable_identifier -> IDENTIFIER .)
+
