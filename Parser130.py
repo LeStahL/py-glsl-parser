@@ -23,10 +23,12 @@ import argparse
 
 from ASTNode import *
 from VariableIdentifier import *
+from Comment import *
 
-tokens = ['ATTRIBUTE', 'CONST', 'BOOL', 'FLOAT', 'INT', 'UINT', 'BREAK', 'CONTINUE', 'DO', 'ELSE', 'FOR', 'IF', 'DISCARD', 'RETURN', 'SWITCH', 'CASE', 'DEFAULT', 'BVEC2', 'BVEC3', 'BVEC4', 'IVEC2', 'IVEC3', 'IVEC4', 'UVEC2', 'UVEC3', 'UVEC4', 'VEC2', 'VEC3', 'VEC4', 'MAT2', 'MAT3', 'MAT4', 'CENTROID', 'IN', 'OUT', 'INOUT', 'UNIFORM', 'VARYING', 'NOPERSPECTIVE', 'FLAT', 'SMOOTH', 'MAT2X2', 'MAT2X3', 'MAT2X4', 'MAT3X2', 'MAT3X3', 'MAT3X4', 'MAT4X2', 'MAT4X3', 'MAT4X4', 'SAMPLER1D', 'SAMPLER2D', 'SAMPLER3D', 'SAMPLERCUBE', 'SAMPLER1DSHADOW', 'SAMPLER2DSHADOW', 'SAMPLERCUBESHADOW', 'SAMPLER1DARRAY', 'SAMPLER2DARRAY', 'SAMPLER1DARRAYSHADOW', 'SAMPLER2DARRAYSHADOW', 'ISAMPLER1D', 'ISAMPLER2D', 'ISAMPLER3D', 'ISAMPLERCUBE', 'ISAMPLER1DARRAY', 'ISAMPLER2DARRAY', 'USAMPLER1D', 'USAMPLER2D', 'USAMPLER3D', 'USAMPLERCUBE', 'USAMPLER1DARRAY', 'USAMPLER2DARRAY', 'STRUCT', 'VOID', 'WHILE', 'IDENTIFIER', 'TYPE_NAME', 'FLOATCONSTANT', 'INTCONSTANT', 'UINTCONSTANT', 'BOOLCONSTANT', 'FIELD_SELECTION', 'LEFT_OP', 'RIGHT_OP', 'INC_OP', 'DEC_OP', 'LE_OP', 'GE_OP', 'EQ_OP', 'NE_OP', 'AND_OP', 'OR_OP', 'XOR_OP', 'MUL_ASSIGN', 'DIV_ASSIGN', 'ADD_ASSIGN', 'MOD_ASSIGN', 'LEFT_ASSIGN', 'RIGHT_ASSIGN', 'AND_ASSIGN', 'XOR_ASSIGN', 'OR_ASSIGN', 'SUB_ASSIGN', 'LEFT_PAREN', 'RIGHT_PAREN', 'LEFT_BRACKET', 'RIGHT_BRACKET', 'LEFT_BRACE', 'RIGHT_BRACE', 'DOT', 'COMMA', 'COLON', 'EQUAL', 'SEMICOLON', 'BANG', 'DASH', 'TILDE', 'PLUS', 'STAR', 'SLASH', 'PERCENT', 'LEFT_ANGLE', 'RIGHT_ANGLE', 'VERTICAL_BAR', 'CARET', 'AMPERSAND', 'QUESTION', 'INVARIANT', 'HIGH_PRECISION', 'MEDIUM_PRECISION', 'LOW_PRECISION', 'PRECISION']
+tokens = ['ATTRIBUTE', 'CONST', 'BOOL', 'FLOAT', 'INT', 'UINT', 'BREAK', 'CONTINUE', 'DO', 'ELSE', 'FOR', 'IF', 'DISCARD', 'RETURN', 'SWITCH', 'CASE', 'DEFAULT', 'BVEC2', 'BVEC3', 'BVEC4', 'IVEC2', 'IVEC3', 'IVEC4', 'UVEC2', 'UVEC3', 'UVEC4', 'VEC2', 'VEC3', 'VEC4', 'MAT2', 'MAT3', 'MAT4', 'CENTROID', 'IN', 'OUT', 'INOUT', 'UNIFORM', 'VARYING', 'NOPERSPECTIVE', 'FLAT', 'SMOOTH', 'MAT2X2', 'MAT2X3', 'MAT2X4', 'MAT3X2', 'MAT3X3', 'MAT3X4', 'MAT4X2', 'MAT4X3', 'MAT4X4', 'SAMPLER1D', 'SAMPLER2D', 'SAMPLER3D', 'SAMPLERCUBE', 'SAMPLER1DSHADOW', 'SAMPLER2DSHADOW', 'SAMPLERCUBESHADOW', 'SAMPLER1DARRAY', 'SAMPLER2DARRAY', 'SAMPLER1DARRAYSHADOW', 'SAMPLER2DARRAYSHADOW', 'ISAMPLER1D', 'ISAMPLER2D', 'ISAMPLER3D', 'ISAMPLERCUBE', 'ISAMPLER1DARRAY', 'ISAMPLER2DARRAY', 'USAMPLER1D', 'USAMPLER2D', 'USAMPLER3D', 'USAMPLERCUBE', 'USAMPLER1DARRAY', 'USAMPLER2DARRAY', 'STRUCT', 'VOID', 'WHILE', 'IDENTIFIER', 'TYPE_NAME', 'FLOATCONSTANT', 'INTCONSTANT', 'UINTCONSTANT', 'BOOLCONSTANT', 'FIELD_SELECTION', 'LEFT_OP', 'RIGHT_OP', 'INC_OP', 'DEC_OP', 'LE_OP', 'GE_OP', 'EQ_OP', 'NE_OP', 'AND_OP', 'OR_OP', 'XOR_OP', 'MUL_ASSIGN', 'DIV_ASSIGN', 'ADD_ASSIGN', 'MOD_ASSIGN', 'LEFT_ASSIGN', 'RIGHT_ASSIGN', 'AND_ASSIGN', 'XOR_ASSIGN', 'OR_ASSIGN', 'SUB_ASSIGN', 'LEFT_PAREN', 'RIGHT_PAREN', 'LEFT_BRACKET', 'RIGHT_BRACKET', 'LEFT_BRACE', 'RIGHT_BRACE', 'DOT', 'COMMA', 'COLON', 'EQUAL', 'SEMICOLON', 'BANG', 'DASH', 'TILDE', 'PLUS', 'STAR', 'SLASH', 'PERCENT', 'LEFT_ANGLE', 'RIGHT_ANGLE', 'VERTICAL_BAR', 'CARET', 'AMPERSAND', 'QUESTION', 'INVARIANT', 'HIGH_PRECISION', 'MEDIUM_PRECISION', 'LOW_PRECISION', 'PRECISION', 'COMMENT', 'SHARP', 'DEFINE', 'VERSION', 'IFDEF', 'ENDIF', 'DEFINED', 'UNDEF', 'PRAGMA']
 
 # Specification of the regular expressions for each token
+COMMENT = '(//.*?\n)|(/\*(.|\n)*?\*/)'
 ATTRIBUTE = 'attribute'
 CONST = 'const'
 BOOL = 'bool'
@@ -160,6 +162,16 @@ HIGH_PRECISION = 'highp'
 MEDIUM_PRECISION = 'mediump'
 LOW_PRECISION = 'lowp'
 PRECISION = 'precision'
+SHARP = '#'
+DEFINE = 'define'
+VERSION = 'version'
+IFDEF = 'ifdef'
+ENDIF = 'endif'
+DEFINED = 'defined'
+UNDEF = 'undef'
+PRAGMA = 'pragma'
+
+#CRLF = '\n'
 
 # Ignored characters 
 t_ignore = " \t" 
@@ -171,7 +183,7 @@ def t_newline(t):
 
 # Print error message on lexing error
 def t_error(t): 
-    print("Illegal character '%s'" % t.value[0]) 
+    print("Lexer Error: Illegal character '%s'" % t.value[0]) 
     t.lexer.skip(1)
     
 # Build the lexer
@@ -199,7 +211,44 @@ precedence = (
     ('left', 'COMMA')
     )
 
+# State variables
 node = ASTNode(None)
+#multiline_comment = False
+#oneline_comment = False
+#def comment():
+    #global multiline_comment, oneline_comment
+    #return multiline_comment or oneline_comment
+
+#def p_newline(t):
+    #global linenumber
+    #'newline : CRLF'
+    #oneline_comment = False
+    #pass
+
+#def p_start_multiline_comment(t):
+    #'start_multiline_comment : LCOMMENT'
+    #if not multiline_comment:
+        #multiline_comment = True
+    #pass
+
+#def p_end_multiline_comment(t):
+    #'p_end_multiline_comment : RCOMMENT'
+    #if multiline_comment:
+        #multiline_comment = False
+    #else:
+        #print("Error: Closing comment '*/' without matching opening comment '/*' at Line ", t.lexer.lineno)
+    #pass
+
+#def p_oneline_comment(t):
+    #'oneline_comment : COMMENT'
+    #oneline_comment = True
+    #pass
+    
+def p_comment(t):
+    'comment : COMMENT'
+    print(t[1])
+    child = Comment(t[1])
+    pass
 
 def p_variable_identifier(t):
     'variable_identifier : IDENTIFIER'
